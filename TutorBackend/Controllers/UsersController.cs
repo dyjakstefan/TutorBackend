@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TutorBackend.Core.Requests;
+using TutorBackend.Infrastructure.Services.Interfaces;
 using TutorBackend.Infrastructure.SqlServerContext;
 
 namespace TutorBackend.Controllers
@@ -11,36 +15,46 @@ namespace TutorBackend.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // GET: api/<UsersController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IUserService userService;
+
+        public UsersController(IUserService userService)
         {
-            return new string[] { "value1", "value2" };
+            this.userService = userService;
         }
 
-        // GET api/<UsersController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
         {
-            return "value";
+            var jwt = await userService.CreateUser(request);
+
+            if (jwt == null)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            return Ok(jwt);
         }
 
-        // POST api/<UsersController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
+            var jwt = await userService.LoginUser(request);
+
+            if (jwt == null)
+            {
+                return BadRequest("Invalid credentials.");
+            }
+
+            return Ok(jwt);
         }
 
-        // PUT api/<UsersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [Authorize]
+        [HttpPost("test")]
+        public async Task<IActionResult> Test()
         {
-        }
-
-        // DELETE api/<UsersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok("You are authorized.");
         }
     }
 }

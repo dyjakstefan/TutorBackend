@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace TutorBackend.Core.Entities
+namespace TutorBackend.Core.Requests
 {
-    public class User
+    public class CreateUserRequest
     {
-        public Guid Id { get; set; }
+        public string Username { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-
-        public string Username { get; set; }
 
         public string Email { get; set; }
 
