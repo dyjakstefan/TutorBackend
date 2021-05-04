@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TutorBackend.Core.Entities;
 using TutorBackend.Infrastructure.MappingProfile;
-using TutorBackend.Infrastructure.Options;
+using TutorBackend.Infrastructure.Settings;
 using TutorBackend.Infrastructure.Services;
 using TutorBackend.Infrastructure.Services.Interfaces;
 using TutorBackend.Infrastructure.SqlServerContext;
@@ -91,9 +92,9 @@ namespace TutorBackend
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            services.AddMvc();
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-            services.Configure<JwtOptions>(Configuration.GetSection(JwtOptions.Jwt));
+            services.Configure<JwtSettigns>(Configuration.GetSection(JwtSettigns.Jwt));
             services.AddTransient<IJwtService, JwtService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
 

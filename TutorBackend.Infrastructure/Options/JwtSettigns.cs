@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TutorBackend.Infrastructure.Options
+namespace TutorBackend.Infrastructure.Settings
 {
-    public class JwtOptions
+    public class JwtSettigns
     {
         public const string Jwt = "Jwt";
 

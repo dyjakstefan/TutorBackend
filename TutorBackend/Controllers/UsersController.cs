@@ -26,12 +26,13 @@ namespace TutorBackend.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var jwt = await userService.CreateUser(request);
 
             if (jwt == null)
-            {
                 return BadRequest("Invalid data.");
-            }
 
             return Ok(jwt);
         }
@@ -43,9 +44,7 @@ namespace TutorBackend.Controllers
             var jwt = await userService.LoginUser(request);
 
             if (jwt == null)
-            {
                 return BadRequest("Invalid credentials.");
-            }
 
             return Ok(jwt);
         }

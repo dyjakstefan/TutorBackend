@@ -9,16 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TutorBackend.Core.Responses;
 using TutorBackend.Infrastructure.Extensions;
-using TutorBackend.Infrastructure.Options;
+using TutorBackend.Infrastructure.Settings;
 using TutorBackend.Infrastructure.Services.Interfaces;
 
 namespace TutorBackend.Infrastructure.Services
 {
     public class JwtService : IJwtService
     {
-        private readonly JwtOptions settings;
+        private readonly JwtSettigns settings;
 
-        public JwtService(IOptions<JwtOptions> settings)
+        public JwtService(IOptions<JwtSettigns> settings)
         {
             this.settings = settings.Value;
         }
