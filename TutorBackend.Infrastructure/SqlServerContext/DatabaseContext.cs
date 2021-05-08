@@ -20,5 +20,29 @@ namespace TutorBackend.Infrastructure.SqlServerContext
         }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Tutor> Tutors { get; set; }
+
+        public DbSet<ScheduleDay> ScheduleDays { get; set; }
+
+        public DbSet<Lesson> Lessons { get; set; }
+
+        public DbSet<Topic> Topics { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<User>()
+                .HasDiscriminator(x => x.UserType)
+                .HasValue<User>("User")
+                .HasValue<Tutor>("Tutor");
+
+            modelBuilder
+                .Entity<Tutor>()
+                .HasMany(x => x.Topics)
+                .WithMany(x => x.Tutors)
+                .UsingEntity(x => x.ToTable("TutorTopics"));
+        }
     }
 }

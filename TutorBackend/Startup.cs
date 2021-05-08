@@ -22,6 +22,8 @@ using TutorBackend.Infrastructure.Settings;
 using TutorBackend.Infrastructure.Services;
 using TutorBackend.Infrastructure.Services.Interfaces;
 using TutorBackend.Infrastructure.SqlServerContext;
+using TutorBackend.Infrastructure.Repositories.Interfaces;
+using TutorBackend.Infrastructure.Repositories;
 
 namespace TutorBackend
 {
@@ -88,6 +90,7 @@ namespace TutorBackend
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new UserProfile());
+                mc.AddProfile(new TutorProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
@@ -99,6 +102,11 @@ namespace TutorBackend
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
 
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ITutorService, TutorService>();
+            services.AddTransient<ITopicService, TopicService>();
+
+            services.AddTransient<ITutorRepository, TutorRepository>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

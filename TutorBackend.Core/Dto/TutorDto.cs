@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TutorBackend.Core.Enums;
 
-namespace TutorBackend.Core.Entities
+namespace TutorBackend.Core.Dto
 {
-    public class User
+    public class TutorDto
     {
-        public Guid Id { get; set; }
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -19,8 +16,14 @@ namespace TutorBackend.Core.Entities
 
         public string Email { get; set; }
 
-        public string Password { get; set; }
+        public string Location { get; set; }
 
-        public string UserType { get; set; }
+        public bool HasRemoteLessons { get; set; }
+
+        public bool HasLocalLessons { get; set; }
+
+        public string Description { get; set; }
+
+        public IList<string> Topics { get; set; }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorBackend.Infrastructure.SqlServerContext;
 
 namespace TutorBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210508123053_TopicKey")]
+    partial class TopicKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,18 +141,17 @@ namespace TutorBackend.Infrastructure.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("TutorProfileId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.HasIndex("TutorProfileId");
 
-                    b.HasDiscriminator<string>("UserType").HasValue("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TutorBackend.Core.Entities.Tutor", b =>
@@ -169,7 +170,7 @@ namespace TutorBackend.Infrastructure.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("Tutor");
+                    b.ToTable("Tutors");
                 });
 
             modelBuilder.Entity("TopicTutor", b =>
@@ -207,6 +208,24 @@ namespace TutorBackend.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Tutor");
+                });
+
+            modelBuilder.Entity("TutorBackend.Core.Entities.User", b =>
+                {
+                    b.HasOne("TutorBackend.Core.Entities.Tutor", "TutorProfile")
+                        .WithMany()
+                        .HasForeignKey("TutorProfileId");
+
+                    b.Navigation("TutorProfile");
+                });
+
+            modelBuilder.Entity("TutorBackend.Core.Entities.Tutor", b =>
+                {
+                    b.HasOne("TutorBackend.Core.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("TutorBackend.Core.Entities.Tutor", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TutorBackend.Core.Entities.ScheduleDay", b =>
