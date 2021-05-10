@@ -16,6 +16,8 @@ namespace TutorBackend.Infrastructure.Repositories.Interfaces
 
         Task<bool> AnyExists(Guid id);
 
+        Task<bool> AnyExists(string username);
+
         Task<Tutor> GetByUsername(string username);
 
         Task<Tutor> GetById(Guid id);

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TutorBackend.Core.Entities
+namespace TutorBackend.Core.Dto
 {
-    public class ScheduleDay
+    public class ScheduleDayDto
     {
         public Guid Id { get; set; }
 
@@ -17,11 +17,5 @@ namespace TutorBackend.Core.Entities
         public DateTime StartAt { get; set; }
 
         public DateTime EndAt { get; set; }
-
-        public Guid TutorId { get; set; }
-
-        public virtual Tutor Tutor { get; set; }
-
-        public virtual List<Lesson> Lessons { get; set; }
     }
 }

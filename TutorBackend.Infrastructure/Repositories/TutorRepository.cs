@@ -50,6 +50,11 @@ namespace TutorBackend.Infrastructure.Repositories
             return await dbContext.Tutors.AnyAsync(x => x.Id == id);
         }
 
+        public async Task<bool> AnyExists(string username)
+        {
+            return await dbContext.Tutors.AnyAsync(x => x.Username == username);
+        }
+
         public async Task<Tutor> GetByUsername(string username)
         {
             return await dbContext.Tutors.Include(x => x.Topics).FirstOrDefaultAsync(x => x.Username == username);

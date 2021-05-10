@@ -43,6 +43,15 @@ namespace TutorBackend.Infrastructure.SqlServerContext
                 .HasMany(x => x.Topics)
                 .WithMany(x => x.Tutors)
                 .UsingEntity(x => x.ToTable("TutorTopics"));
+
+            modelBuilder
+                .Entity<Tutor>()
+                .HasMany(x => x.ScheduleDays)
+                .WithOne(x => x.Tutor);
+
+            modelBuilder
+                .Entity<ScheduleDay>()
+                .HasIndex(x => x.TutorId);
         }
     }
 }

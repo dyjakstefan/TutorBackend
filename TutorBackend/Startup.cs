@@ -91,9 +91,10 @@ namespace TutorBackend
             {
                 mc.AddProfile(new UserProfile());
                 mc.AddProfile(new TutorProfile());
+                mc.AddProfile(new ScheduleProfile());
             });
 
-            IMapper mapper = mapperConfig.CreateMapper();
+            var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
@@ -104,9 +105,11 @@ namespace TutorBackend
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITutorService, TutorService>();
             services.AddTransient<ITopicService, TopicService>();
+            services.AddTransient<IScheduleService, ScheduleService>();
 
             services.AddTransient<ITutorRepository, TutorRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
+            services.AddTransient<IScheduleRepository, ScheduleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

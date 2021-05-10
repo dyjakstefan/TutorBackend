@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TutorBackend.Core.Entities;
+using TutorBackend.Core.Requests;
+
+namespace TutorBackend.Infrastructure.Repositories.Interfaces
+{
+    public interface IScheduleRepository
+    {
+        Task<bool> CreateScheduleDay(ScheduleDay request);
+
+        Task<IList<ScheduleDay>> GetAllForTutor(string username);
+
+        Task<bool> DeleteScheduleDay(Guid scheduleId, Guid userId);
+    }
+}
