@@ -23,5 +23,7 @@ namespace TutorBackend.Infrastructure.Repositories.Interfaces
         Task<Tutor> GetById(Guid id);
 
         Task<bool> Delete(Guid id);
+
+        Task<IList<Tutor>> GetTutors(FilterTutorsRequest request);
     }
 }

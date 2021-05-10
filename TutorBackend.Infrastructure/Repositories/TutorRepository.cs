@@ -87,5 +87,26 @@ namespace TutorBackend.Infrastructure.Repositories
 
             return result > 0;
         }
+
+        public async Task<IList<Tutor>> GetTutors(FilterTutorsRequest request)
+        {
+            var tutors = await dbContext.Tutors
+                .Include(x => x.Topics)
+                .AsNoTracking()
+                .ToListAsync();
+
+            var filteredList = tutors.Where(x => x.UserType == Constants.Tutor
+                    && (x.Username.Contains(request.SearchString) || x.FirstName.Contains(request.SearchString) || x.LastName.Contains(request.SearchString))
+                    && (request.LocalLessons == null || x.HasLocalLessons == request.LocalLessons) 
+                    && (request.RemoteLessons == null || x.HasRemoteLessons == request.RemoteLessons)
+                    && (x.Location == request.Localization)
+                    && !x.Topics.TrueForAll(t => !request.SelectedTopics.Contains(t.Name))
+                )
+                .Skip((request.Page - 1) * request.Limit)
+                .Take(request.Limit)
+                .ToList();
+
+            return filteredList;
+        }
     }
 }

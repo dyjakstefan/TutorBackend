@@ -79,5 +79,16 @@ namespace TutorBackend.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTutors([FromQuery] FilterTutorsRequest request)
+        {
+            var result = await tutorService.GetTutors(request);
+
+            if (result == null)
+                return BadRequest("Invalid data.");
+
+            return Ok(result);
+        }
     }
 }

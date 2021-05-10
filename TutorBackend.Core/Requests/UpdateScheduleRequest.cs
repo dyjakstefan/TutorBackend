@@ -14,12 +14,6 @@ namespace TutorBackend.Core.Requests
 
         public Guid ScheduleId { get; set; }
 
-        public bool IsRepeatable { get; set; }
-
-        public int RepeatAfterWeeks { get; set; }
-
-        public DateTime EndOfRepetition { get; set; }
-
         public DateTime StartAt { get; set; }
 
         public DateTime EndAt { get; set; }

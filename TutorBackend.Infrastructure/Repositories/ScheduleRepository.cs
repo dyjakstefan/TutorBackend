@@ -51,5 +51,20 @@ namespace TutorBackend.Infrastructure.Repositories
 
             return result > 0;
         }
+
+        public async Task<bool> UpdateScheduleDay(UpdateScheduleRequest request)
+        {
+            var schedule = await dbContext.ScheduleDays.FirstOrDefaultAsync(x => x.Id == request.ScheduleId);
+
+            if (schedule == null) return false;
+
+            schedule.UpdatedAt = DateTime.Now;
+            schedule.StartAt = request.StartAt;
+            schedule.EndAt = request.EndAt;
+            dbContext.ScheduleDays.Update(schedule);
+            var result = await dbContext.SaveChangesAsync();
+
+            return result > 0;
+        }
     }
 }

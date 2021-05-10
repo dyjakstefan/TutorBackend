@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TutorBackend.Core.Dto;
 using TutorBackend.Core.Entities;
@@ -57,6 +58,18 @@ namespace TutorBackend.Infrastructure.Services
             var tutor = await tutorRepository.GetByUsername(username);
 
             return mapper.Map<TutorDto>(tutor);
+        }
+
+        public async Task<IList<TutorDto>> GetTutors(FilterTutorsRequest request)
+        {
+            if (request.SelectedTopics == null)
+            {
+                request.SelectedTopics = new List<string>();
+            }
+
+            var tutors = await tutorRepository.GetTutors(request);
+
+            return mapper.Map<IList<TutorDto>>(tutors);
         }
 
         public async Task<bool> DeleteTutorProfile(Guid id)

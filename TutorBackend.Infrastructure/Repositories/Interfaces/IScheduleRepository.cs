@@ -10,10 +10,12 @@ namespace TutorBackend.Infrastructure.Repositories.Interfaces
 {
     public interface IScheduleRepository
     {
-        Task<bool> CreateScheduleDay(ScheduleDay request);
+        Task<bool> CreateScheduleDay(ScheduleDay schedule);
 
         Task<IList<ScheduleDay>> GetAllForTutor(string username);
 
         Task<bool> DeleteScheduleDay(Guid scheduleId, Guid userId);
+
+        Task<bool> UpdateScheduleDay(UpdateScheduleRequest request);
     }
 }

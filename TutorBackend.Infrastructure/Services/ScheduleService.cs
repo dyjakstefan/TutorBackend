@@ -60,9 +60,14 @@ namespace TutorBackend.Infrastructure.Services
             return schedulesDto;
         }
 
-        public Task<bool> UpdateScheduleDay(UpdateScheduleRequest request)
+        public async Task<bool> UpdateScheduleDay(UpdateScheduleRequest request)
         {
-            throw new NotImplementedException();
+            if (request.StartAt.Date != request.EndAt.Date || !await tutorRepository.AnyExists(request.UserId))
+            {
+                return false;
+            }
+
+            return await scheduleRepository.UpdateScheduleDay(request);
         }
 
         public async Task<bool> DeleteScheduleDay(Guid scheduleId, Guid userId)
