@@ -90,21 +90,48 @@ namespace TutorBackend.Infrastructure.Repositories
 
         public async Task<IList<Tutor>> GetTutors(FilterTutorsRequest request)
         {
-            var tutors = await dbContext.Tutors
+            var tutorsQuery = dbContext.Tutors
                 .Include(x => x.Topics)
-                .AsNoTracking()
-                .ToListAsync();
+                .Include(x => x.ScheduleDays.Where(s => s.StartAt.Date >= DateTime.Today))
+                .Where(x => x.UserType == Constants.Tutor)
+                .AsQueryable();
 
-            var filteredList = tutors.Where(x => x.UserType == Constants.Tutor
-                    && (x.Username.Contains(request.SearchString) || x.FirstName.Contains(request.SearchString) || x.LastName.Contains(request.SearchString))
-                    && (request.LocalLessons == null || x.HasLocalLessons == request.LocalLessons) 
-                    && (request.RemoteLessons == null || x.HasRemoteLessons == request.RemoteLessons)
-                    && (x.Location == request.Localization)
-                    && !x.Topics.TrueForAll(t => !request.SelectedTopics.Contains(t.Name))
-                )
-                .Skip((request.Page - 1) * request.Limit)
+            if (!string.IsNullOrWhiteSpace(request.SearchString))
+            {
+                tutorsQuery = tutorsQuery.Where(x =>
+                    x.Username.Contains(request.SearchString) || x.FirstName.Contains(request.SearchString) ||
+                    x.LastName.Contains(request.SearchString));
+            }
+
+            if (request.LocalLessons != null)
+            {
+                tutorsQuery = tutorsQuery.Where(x => x.HasLocalLessons == request.LocalLessons);
+            }
+
+            if (request.RemoteLessons != null)
+            {
+                tutorsQuery = tutorsQuery.Where(x => x.HasRemoteLessons == request.RemoteLessons);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Localization))
+            {
+                tutorsQuery = tutorsQuery.Where(x => x.Location == request.Localization);
+            }
+
+            if (request.SelectedTopics is {Count: > 0})
+            {
+                tutorsQuery = tutorsQuery.Where(x => x.Topics.Any(t => request.SelectedTopics.Contains(t.Name)));
+            }
+
+            if ((request.SearchTo - request.SearchFrom).TotalHours > 0)
+            {
+                tutorsQuery = tutorsQuery.Where(x =>
+                    x.ScheduleDays.Any(s => (s.StartAt >= request.SearchFrom && s.EndAt <= request.SearchTo) || (s.StartAt <= request.SearchFrom && s.EndAt >= request.SearchFrom) || (s.EndAt >= request.SearchTo && s.StartAt <= request.SearchTo)));
+            }
+
+            var filteredList = await tutorsQuery.Skip((request.Page - 1) * request.Limit)
                 .Take(request.Limit)
-                .ToList();
+                .ToListAsync();
 
             return filteredList;
         }

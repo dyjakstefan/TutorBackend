@@ -62,11 +62,6 @@ namespace TutorBackend.Infrastructure.Services
 
         public async Task<IList<TutorDto>> GetTutors(FilterTutorsRequest request)
         {
-            if (request.SelectedTopics == null)
-            {
-                request.SelectedTopics = new List<string>();
-            }
-
             var tutors = await tutorRepository.GetTutors(request);
 
             return mapper.Map<IList<TutorDto>>(tutors);

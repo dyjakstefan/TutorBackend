@@ -21,5 +21,9 @@ namespace TutorBackend.Core.Requests
         public int Page { get; set; } = 1;
 
         public int Limit { get; set; } = 15;
+
+        public DateTime SearchFrom { get; set; }
+
+        public DateTime SearchTo { get; set; }
     }
 }
