@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorBackend.Infrastructure.SqlServerContext;
 
 namespace TutorBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210515131135_ReserveLesson")]
+    partial class ReserveLesson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,8 +48,20 @@ namespace TutorBackend.Infrastructure.Migrations
                     b.Property<DateTime>("EndAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("EndOfRepetition")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsRepeatable")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RepeatAfterDays")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RepeatAfterWeeks")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("ScheduleDayId")
                         .HasColumnType("uniqueidentifier");

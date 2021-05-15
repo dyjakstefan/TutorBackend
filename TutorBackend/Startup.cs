@@ -92,6 +92,7 @@ namespace TutorBackend
                 mc.AddProfile(new UserProfile());
                 mc.AddProfile(new TutorProfile());
                 mc.AddProfile(new ScheduleProfile());
+                mc.AddProfile(new LessonProfile());
             });
 
             var mapper = mapperConfig.CreateMapper();
@@ -106,10 +107,12 @@ namespace TutorBackend
             services.AddTransient<ITutorService, TutorService>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<IScheduleService, ScheduleService>();
+            services.AddTransient<ILessonService, LessonService>();
 
             services.AddTransient<ITutorRepository, TutorRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IScheduleRepository, ScheduleRepository>();
+            services.AddTransient<ILessonRepository, LessonRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

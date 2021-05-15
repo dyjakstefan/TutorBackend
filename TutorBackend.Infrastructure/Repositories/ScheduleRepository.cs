@@ -41,6 +41,12 @@ namespace TutorBackend.Infrastructure.Repositories
             return tutor?.ScheduleDays;
         }
 
+        public async Task<ScheduleDay> GetScheduleById(Guid scheduleId)
+        {
+            var schedule = await dbContext.ScheduleDays.Include(x => x.Lessons).FirstOrDefaultAsync(x => x.Id == scheduleId);
+            return schedule;
+        }
+
         public async Task<bool> DeleteScheduleDay(Guid scheduleId, Guid userId)
         {
             var scheduleDay =

@@ -52,6 +52,13 @@ namespace TutorBackend.Infrastructure.SqlServerContext
             modelBuilder
                 .Entity<ScheduleDay>()
                 .HasIndex(x => x.TutorId);
+
+            modelBuilder
+                .Entity<User>()
+                .HasMany(x => x.Lessons)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

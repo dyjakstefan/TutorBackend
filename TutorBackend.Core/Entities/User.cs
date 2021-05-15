@@ -22,5 +22,7 @@ namespace TutorBackend.Core.Entities
         public string Password { get; set; }
 
         public string UserType { get; set; }
+
+        public IList<Lesson> Lessons { get; set; }
     }
 }

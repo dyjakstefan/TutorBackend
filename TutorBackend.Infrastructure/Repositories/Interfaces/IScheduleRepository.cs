@@ -14,6 +14,8 @@ namespace TutorBackend.Infrastructure.Repositories.Interfaces
 
         Task<IList<ScheduleDay>> GetAllForTutor(string username);
 
+        Task<ScheduleDay> GetScheduleById(Guid scheduleId);
+
         Task<bool> DeleteScheduleDay(Guid scheduleId, Guid userId);
 
         Task<bool> UpdateScheduleDay(UpdateScheduleRequest request);
