@@ -26,6 +26,8 @@ namespace TutorBackend.Core.Entities
 
         public Guid UserId { get; set; }
 
+        public Guid TutorId { get; set; }
+
         public virtual ScheduleDay ScheduleDay { get; set; }
 
         public virtual User User { get; set; }

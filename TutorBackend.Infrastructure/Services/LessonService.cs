@@ -17,13 +17,15 @@ namespace TutorBackend.Infrastructure.Services
         private readonly ILessonRepository lessonRepository;
         private readonly IScheduleRepository scheduleRepository;
         private readonly ITutorRepository tutorRepository;
+        private readonly IUserRepository userRepository;
         private readonly IMapper mapper;
 
-        public LessonService(ILessonRepository lessonRepository, IScheduleRepository scheduleRepository, IMapper mapper, ITutorRepository tutorRepository)
+        public LessonService(ILessonRepository lessonRepository, IScheduleRepository scheduleRepository, IMapper mapper, ITutorRepository tutorRepository, IUserRepository userRepository)
         {
             this.lessonRepository = lessonRepository;
             this.scheduleRepository = scheduleRepository;
             this.tutorRepository = tutorRepository;
+            this.userRepository = userRepository;
             this.mapper = mapper;
         }
 
@@ -48,15 +50,16 @@ namespace TutorBackend.Infrastructure.Services
             }
 
             var lesson = mapper.Map<Lesson>(request);
-            
+            lesson.TutorId = tutor.Id;
+
             var result = await lessonRepository.ReserveLesson(lesson);
 
             return result;
         }
 
-        public async Task<IList<LessonDto>> GetIncomingLessons(Guid userId)
+        public async Task<IList<LessonDto>> GetPlannedLessons(Guid userId)
         {
-            var lessons = await lessonRepository.GetIncomingLessons(userId);
+            var lessons = await lessonRepository.GetPlannedLessons(userId);
 
             var lessonsDto = mapper.Map<IList<LessonDto>>(lessons);
 
@@ -70,6 +73,32 @@ namespace TutorBackend.Infrastructure.Services
             var lessonsDto = mapper.Map<IList<LessonDto>>(lessons);
 
             return lessonsDto;
+        }
+
+        public async Task<bool> AcceptLesson(AcceptLessonRequest request)
+        {
+            var tutor = await tutorRepository.GetById(request.TutorId);
+            var lesson = await lessonRepository.GetById(request.LessonId);
+
+            if (tutor == null || lesson == null || tutor.Id != lesson.TutorId)
+            {
+                return false;
+            }
+
+            return await lessonRepository.AcceptLesson(lesson);
+        }
+
+        public async Task<bool> RejectLesson(RejectLessonRequest request)
+        {
+            var user = await userRepository.GetById(request.UserId);
+            var lesson = await lessonRepository.GetById(request.LessonId);
+
+            if (user == null || lesson == null || !(user.Id == lesson.TutorId || user.Id == lesson.UserId))
+            {
+                return false;
+            }
+
+            return await lessonRepository.RejectLesson(lesson);
         }
     }
 }

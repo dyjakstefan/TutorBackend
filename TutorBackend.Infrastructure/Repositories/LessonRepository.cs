@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TutorBackend.Core.Entities;
+using TutorBackend.Core.Requests;
 using TutorBackend.Infrastructure.Repositories.Interfaces;
 using TutorBackend.Infrastructure.SqlServerContext;
 
@@ -31,12 +32,13 @@ namespace TutorBackend.Infrastructure.Repositories
             return result > 0;
         }
 
-        public async Task<IList<Lesson>> GetIncomingLessons(Guid userId)
+        public async Task<IList<Lesson>> GetPlannedLessons(Guid userId)
         {
             var lessons = await dbContext.Lessons
+                .Include(x => x.User)
                 .Include(x => x.ScheduleDay)
                 .ThenInclude(x => x.Tutor)
-                .Where(x => x.StartAt > DateTime.Now && x.UserId == userId)
+                .Where(x => x.StartAt > DateTime.Now && (x.UserId == userId || x.TutorId == userId))
                 .ToListAsync();
 
             return lessons;
@@ -47,10 +49,32 @@ namespace TutorBackend.Infrastructure.Repositories
             var lessons = await dbContext.Lessons
                 .Include(x => x.ScheduleDay)
                 .ThenInclude(x => x.Tutor)
-                .Where(x => x.StartAt < DateTime.Now && x.UserId == userId)
+                .Where(x => x.StartAt < DateTime.Now && (x.UserId == userId || x.TutorId == userId))
                 .ToListAsync();
 
             return lessons;
+        }
+
+        public async Task<bool> AcceptLesson(Lesson lesson)
+        {
+            lesson.IsAccepted = true;
+            var result = await dbContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<bool> RejectLesson(Lesson lesson)
+        {
+            dbContext.Remove(lesson);
+            var result = await dbContext.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<Lesson> GetById(Guid id)
+        {
+            var lesson = await dbContext.Lessons.FirstOrDefaultAsync(x => x.Id == id);
+            return lesson;
         }
     }
 }

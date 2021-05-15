@@ -12,8 +12,12 @@ namespace TutorBackend.Infrastructure.Services.Interfaces
     {
         Task<bool> ReserveLesson(ReserveLessonRequest request);
 
-        Task<IList<LessonDto>> GetIncomingLessons(Guid userId);
+        Task<IList<LessonDto>> GetPlannedLessons(Guid userId);
 
         Task<IList<LessonDto>> GetHistoryLessons(Guid userId);
+
+        Task<bool> AcceptLesson(AcceptLessonRequest request);
+
+        Task<bool> RejectLesson(RejectLessonRequest request);
     }
 }

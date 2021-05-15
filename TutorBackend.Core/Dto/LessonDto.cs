@@ -24,5 +24,6 @@ namespace TutorBackend.Core.Dto
 
         public string TutorUsername { get; set; }
 
+        public string StudentUsername { get; set; }
     }
 }

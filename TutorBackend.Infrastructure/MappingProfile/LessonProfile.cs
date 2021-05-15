@@ -18,7 +18,8 @@ namespace TutorBackend.Infrastructure.MappingProfile
                 .ForMember(x => x.ScheduleDayId, opt => opt.MapFrom(x => x.ScheduleId));
 
             CreateMap<Lesson, LessonDto>()
-                .ForMember(x => x.TutorUsername, opt => opt.MapFrom(x => x.ScheduleDay.Tutor.Username));
+                .ForMember(x => x.TutorUsername, opt => opt.MapFrom(x => x.ScheduleDay.Tutor.Username))
+                .ForMember(x => x.StudentUsername, opt => opt.MapFrom(x => x.User.Username));
         }
     }
 }

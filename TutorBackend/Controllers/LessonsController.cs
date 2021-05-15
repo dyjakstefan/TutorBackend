@@ -38,12 +38,12 @@ namespace TutorBackend.Controllers
             return Ok();
         }
 
-        [HttpGet("Incoming")]
+        [HttpGet("Planned")]
         [Authorize]
-        public async Task<IActionResult> GetIncomingLessons()
+        public async Task<IActionResult> GetPlannedLessons()
         {
             var userId = User.GetUserId();
-            var result = await lessonService.GetIncomingLessons(userId);
+            var result = await lessonService.GetPlannedLessons(userId);
 
             if (result == null)
                 return BadRequest("Invalid data.");
@@ -63,6 +63,32 @@ namespace TutorBackend.Controllers
                 return BadRequest("Invalid data.");
 
             return Ok(result);
+        }
+
+        [HttpPost("Accept")]
+        [Authorize]
+        public async Task<IActionResult> AcceptLesson([FromBody] AcceptLessonRequest request)
+        {
+            request.TutorId = User.GetUserId();
+            var result = await lessonService.AcceptLesson(request);
+
+            if (result == false)
+                return BadRequest("Invalid data.");
+
+            return Ok();
+        }
+
+        [HttpDelete("Reject")]
+        [Authorize]
+        public async Task<IActionResult> RejectLesson([FromBody] RejectLessonRequest request)
+        {
+            request.UserId = User.GetUserId();
+            var result = await lessonService.RejectLesson(request);
+
+            if (result == false)
+                return BadRequest("Invalid data.");
+
+            return Ok();
         }
     }
 }
