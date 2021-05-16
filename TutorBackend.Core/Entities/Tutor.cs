@@ -20,5 +20,7 @@ namespace TutorBackend.Core.Entities
         public virtual List<Topic> Topics { get; set; }
 
         public virtual List<ScheduleDay> ScheduleDays { get; set; }
+
+        public virtual List<Review> Reviews { get; set; }
     }
 }

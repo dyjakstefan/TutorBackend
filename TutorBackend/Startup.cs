@@ -3,7 +3,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,11 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TutorBackend.Core.Entities;
 using TutorBackend.Infrastructure.MappingProfile;
 using TutorBackend.Infrastructure.Settings;
@@ -93,6 +88,7 @@ namespace TutorBackend
                 mc.AddProfile(new TutorProfile());
                 mc.AddProfile(new ScheduleProfile());
                 mc.AddProfile(new LessonProfile());
+                mc.AddProfile(new ReviewProfile());
             });
 
             var mapper = mapperConfig.CreateMapper();
@@ -108,12 +104,16 @@ namespace TutorBackend
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<IScheduleService, ScheduleService>();
             services.AddTransient<ILessonService, LessonService>();
+            services.AddTransient<IReviewService, ReviewService>();
+            services.AddTransient<IRatingService, RatingService>();
 
             services.AddTransient<ITutorRepository, TutorRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IScheduleRepository, ScheduleRepository>();
             services.AddTransient<ILessonRepository, LessonRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IReviewRepository, ReviewRepository>();
+            services.AddTransient<IRatingRepository, RatingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

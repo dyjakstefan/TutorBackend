@@ -29,6 +29,9 @@ namespace TutorBackend.Infrastructure.SqlServerContext
 
         public DbSet<Topic> Topics { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
+        public DbSet<Rating> Ratings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

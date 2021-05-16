@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorBackend.Infrastructure.SqlServerContext;
 
 namespace TutorBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210516134513_ReviewAndRatings")]
+    partial class ReviewAndRatings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,59 +73,6 @@ namespace TutorBackend.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Lessons");
-                });
-
-            modelBuilder.Entity("TutorBackend.Core.Entities.Rating", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Ratings");
-                });
-
-            modelBuilder.Entity("TutorBackend.Core.Entities.Review", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("TutorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TutorId");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("TutorBackend.Core.Entities.ScheduleDay", b =>
@@ -249,28 +198,6 @@ namespace TutorBackend.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TutorBackend.Core.Entities.Rating", b =>
-                {
-                    b.HasOne("TutorBackend.Core.Entities.User", "User")
-                        .WithMany("Ratings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TutorBackend.Core.Entities.Review", b =>
-                {
-                    b.HasOne("TutorBackend.Core.Entities.Tutor", "Tutor")
-                        .WithMany("Reviews")
-                        .HasForeignKey("TutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tutor");
-                });
-
             modelBuilder.Entity("TutorBackend.Core.Entities.ScheduleDay", b =>
                 {
                     b.HasOne("TutorBackend.Core.Entities.Tutor", "Tutor")
@@ -290,14 +217,10 @@ namespace TutorBackend.Infrastructure.Migrations
             modelBuilder.Entity("TutorBackend.Core.Entities.User", b =>
                 {
                     b.Navigation("Lessons");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("TutorBackend.Core.Entities.Tutor", b =>
                 {
-                    b.Navigation("Reviews");
-
                     b.Navigation("ScheduleDays");
                 });
 #pragma warning restore 612, 618

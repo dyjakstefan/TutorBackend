@@ -71,6 +71,12 @@ namespace TutorBackend.Infrastructure.Repositories
             return result > 0;
         }
 
+        public async Task<bool> AnyLessonForUser(Guid userId, Guid tutorId)
+        {
+            var result = await dbContext.Lessons.AnyAsync(x => x.UserId == userId && x.TutorId == tutorId);
+            return result;
+        }
+
         public async Task<Lesson> GetById(Guid id)
         {
             var lesson = await dbContext.Lessons.FirstOrDefaultAsync(x => x.Id == id);

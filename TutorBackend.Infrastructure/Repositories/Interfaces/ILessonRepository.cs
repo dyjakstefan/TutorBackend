@@ -21,5 +21,7 @@ namespace TutorBackend.Infrastructure.Repositories.Interfaces
         Task<bool> AcceptLesson(Lesson lesson);
 
         Task<bool> RejectLesson(Lesson lesson);
+
+        Task<bool> AnyLessonForUser(Guid userId, Guid tutorId);
     }
 }

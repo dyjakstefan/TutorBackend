@@ -23,6 +23,8 @@ namespace TutorBackend.Core.Entities
 
         public string UserType { get; set; }
 
-        public IList<Lesson> Lessons { get; set; }
+        public virtual List<Lesson> Lessons { get; set; }
+
+        public virtual List<Rating> Ratings { get; set; }
     }
 }
