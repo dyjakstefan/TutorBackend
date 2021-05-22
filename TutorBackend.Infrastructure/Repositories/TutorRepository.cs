@@ -92,6 +92,7 @@ namespace TutorBackend.Infrastructure.Repositories
         {
             var tutorsQuery = dbContext.Tutors
                 .Include(x => x.Topics)
+                .Include(x => x.Ratings)
                 .Include(x => x.ScheduleDays.Where(s => s.StartAt.Date >= DateTime.Today))
                 .Where(x => x.UserType == Constants.Tutor)
                 .AsQueryable();

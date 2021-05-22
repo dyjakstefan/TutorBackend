@@ -89,6 +89,7 @@ namespace TutorBackend
                 mc.AddProfile(new ScheduleProfile());
                 mc.AddProfile(new LessonProfile());
                 mc.AddProfile(new ReviewProfile());
+                mc.AddProfile(new RatingProfile());
             });
 
             var mapper = mapperConfig.CreateMapper();

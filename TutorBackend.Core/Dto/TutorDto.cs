@@ -24,6 +24,8 @@ namespace TutorBackend.Core.Dto
 
         public string Description { get; set; }
 
+        public double Rating { get; set; }
+
         public IList<string> Topics { get; set; }
 
         public IList<ScheduleDayDto> ScheduleDays { get; set; }

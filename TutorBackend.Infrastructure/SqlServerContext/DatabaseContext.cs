@@ -33,6 +33,12 @@ namespace TutorBackend.Infrastructure.SqlServerContext
 
         public DbSet<Rating> Ratings { get; set; }
 
+        public DbSet<Conversation> Conversations { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<SharedFile> SharedFiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
@@ -59,6 +65,13 @@ namespace TutorBackend.Infrastructure.SqlServerContext
             modelBuilder
                 .Entity<User>()
                 .HasMany(x => x.Lessons)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder
+                .Entity<User>()
+                .HasMany(x => x.Conversations)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.NoAction);

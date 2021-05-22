@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using TutorBackend.Core.Dto;
 using TutorBackend.Core.Entities;
 using TutorBackend.Core.Requests;
@@ -25,7 +27,21 @@ namespace TutorBackend.Infrastructure.MappingProfile
 
             CreateMap<User, Tutor>();
 
-            CreateMap<Tutor, TutorDto>();
+            CreateMap<Tutor, TutorDto>()
+                .ForMember(x => x.Rating, opt => opt.MapFrom<RatingResolver>());
+        }
+    }
+
+    public class RatingResolver : IValueResolver<Tutor, TutorDto, double>
+    {
+        public double Resolve(Tutor tutor, TutorDto tutorDto, double rating, ResolutionContext context)
+        {
+            if (tutor.Ratings is {Count: > 0})
+            {
+                return tutor.Ratings.Average(x => x.Score);
+            }
+
+            return 0;
         }
     }
 }

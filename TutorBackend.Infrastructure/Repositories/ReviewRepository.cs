@@ -21,7 +21,7 @@ namespace TutorBackend.Infrastructure.Repositories
 
         public async Task<bool> Add(Review review)
         {
-            await dbContext.AddAsync(review);
+            await dbContext.Reviews.AddAsync(review);
             var result = await dbContext.SaveChangesAsync();
 
             return result > 0;

@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace TutorBackend.Core.Entities
 {
-    public class Rating
+    public class Message
     {
         public Guid Id { get; set; }
 
-        public int Score { get; set; }
-
-        public Guid IssuerId { get; set; }
+        public string Text { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        public Guid UserId { get; set; }
+        public string Author { get; set; }
 
-        public virtual User User { get; set; }
+        public Guid ConversationId { get; set; }
+
+        public virtual Conversation Conversation { get; set; }
     }
 }

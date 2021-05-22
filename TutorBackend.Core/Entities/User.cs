@@ -26,5 +26,7 @@ namespace TutorBackend.Core.Entities
         public virtual List<Lesson> Lessons { get; set; }
 
         public virtual List<Rating> Ratings { get; set; }
+
+        public virtual List<Conversation> Conversations { get; set; }
     }
 }
