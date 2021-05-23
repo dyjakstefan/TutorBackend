@@ -12,11 +12,11 @@ namespace TutorBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RatingController : ControllerBase
+    public class RatingsController : ControllerBase
     {
         private readonly IRatingService ratingService;
 
-        public RatingController(IRatingService ratingService)
+        public RatingsController(IRatingService ratingService)
         {
             this.ratingService = ratingService;
         }
