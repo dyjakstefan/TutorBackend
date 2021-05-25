@@ -47,6 +47,7 @@ namespace TutorBackend.Infrastructure.Repositories
         {
             var conversation = await dbContext.Conversations
                 .Include(x => x.Messages.OrderByDescending(m => m.CreatedAt))
+                .Include(x => x.SharedFiles.OrderByDescending(s => s.CreatedAt))
                 .Include(x => x.Tutor)
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.TutorId == tutorId && x.UserId == userId);
@@ -56,7 +57,10 @@ namespace TutorBackend.Infrastructure.Repositories
 
         public async Task<IList<Conversation>> GetConversationList(Guid userId)
         {
-            var conversation = await dbContext.Conversations.Include(x => x.Tutor).Include(x => x.User).Where(x => x.UserId == userId || x.TutorId == userId).ToListAsync();
+            var conversation = await dbContext.Conversations
+                .Include(x => x.Tutor)
+                .Include(x => x.User)
+                .Where(x => x.UserId == userId || x.TutorId == userId).ToListAsync();
 
             return conversation;
         }

@@ -18,7 +18,8 @@ namespace TutorBackend.Infrastructure.MappingProfile
 
             CreateMap<Conversation, ConversationDto>()
                 .ForMember(x => x.Username, opt => opt.MapFrom(x => x.User.Username))
-                .ForMember(x => x.TutorUsername, opt => opt.MapFrom(x => x.Tutor.Username));
+                .ForMember(x => x.TutorUsername, opt => opt.MapFrom(x => x.Tutor.Username))
+                .ForMember(x => x.Files, opt => opt.MapFrom(s => s.SharedFiles));
 
             CreateMap<Message, MessageDto>();
         }

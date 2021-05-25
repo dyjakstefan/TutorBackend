@@ -13,7 +13,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TutorBackend.Core.Entities;
 using TutorBackend.Infrastructure.MappingProfile;
-using TutorBackend.Infrastructure.Settings;
+using TutorBackend.Infrastructure.Options;
 using TutorBackend.Infrastructure.Services;
 using TutorBackend.Infrastructure.Services.Interfaces;
 using TutorBackend.Infrastructure.SqlServerContext;
@@ -91,15 +91,23 @@ namespace TutorBackend
                 mc.AddProfile(new ReviewProfile());
                 mc.AddProfile(new RatingProfile());
                 mc.AddProfile(new MessageProfile());
+                mc.AddProfile(new SharedFileProfile());
             });
 
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin", x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-            services.Configure<JwtSettigns>(Configuration.GetSection(JwtSettigns.Jwt));
+            services.Configure<JwtSettings>(Configuration.GetSection(JwtSettings.Jwt));
+            services.Configure<BlobStorageSettings>(Configuration.GetSection(BlobStorageSettings.BlobStorage));
             services.AddTransient<IJwtService, JwtService>();
             services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddTransient<IBlobStorageService, BlobStorageService>();
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITutorService, TutorService>();
@@ -109,6 +117,7 @@ namespace TutorBackend
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<ISharedFileService, SharedFileService>();
 
             services.AddTransient<ITutorRepository, TutorRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
@@ -118,6 +127,7 @@ namespace TutorBackend
             services.AddTransient<IReviewRepository, ReviewRepository>();
             services.AddTransient<IRatingRepository, RatingRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<ISharedFileRepository, SharedFileRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,6 +149,7 @@ namespace TutorBackend
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("AllowAnyOrigin");
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

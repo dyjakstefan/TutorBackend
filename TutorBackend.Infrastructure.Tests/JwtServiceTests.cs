@@ -1,10 +1,10 @@
 ﻿using System;
-using TutorBackend.Infrastructure.Settings;
 using TutorBackend.Infrastructure.Services;
 using Xunit;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using TutorBackend.Infrastructure.Options;
 
 namespace TutorBackend.Infrastructure.Tests
 {
@@ -16,7 +16,7 @@ namespace TutorBackend.Infrastructure.Tests
         public void ShouldReturnTokenWithMinutesToExpiration(int expiryMinutes)
         {
             //Arrange
-            var jwtSettings = new JwtSettigns
+            var jwtSettings = new JwtSettings
             {
                 Key = "ABCDdsfsie34dsd5",
                 Issuer = "test",

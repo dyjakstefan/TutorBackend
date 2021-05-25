@@ -19,5 +19,7 @@ namespace TutorBackend.Core.Dto
         public string TutorUsername { get; set; }
 
         public IList<MessageDto> Messages { get; set; }
+
+        public IList<SharedFileDto> Files { get; set; }
     }
 }
