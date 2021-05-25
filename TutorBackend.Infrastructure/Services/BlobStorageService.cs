@@ -53,6 +53,7 @@ namespace TutorBackend.Infrastructure.Services
             var memoryStream = new MemoryStream();
             await blob.DownloadToAsync(memoryStream);
 
+            memoryStream.Position = 0;
             return memoryStream;
         }
     }
