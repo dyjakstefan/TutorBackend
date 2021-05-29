@@ -50,10 +50,16 @@ namespace TutorBackend.Controllers
         }
 
         [Authorize]
-        [HttpPost("test")]
-        public async Task<IActionResult> Test()
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
         {
-            return Ok("You are authorized.");
+            var username = User.Identity.Name;
+            var result = await userService.GetUser(username);
+
+            if (result == null)
+                return BadRequest("Invalid data.");
+
+            return Ok(result);
         }
     }
 }

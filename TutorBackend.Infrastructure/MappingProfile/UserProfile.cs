@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using TutorBackend.Core.Dto;
 using TutorBackend.Core.Entities;
 using TutorBackend.Core.Requests;
 
@@ -12,6 +13,8 @@ namespace TutorBackend.Infrastructure.MappingProfile
             CreateMap<CreateUserRequest, User>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(o => Guid.NewGuid()))
                 .ForMember(x => x.Password, opt => opt.Ignore());
+
+            CreateMap<User, UserDto>();
         }
     }
 }
