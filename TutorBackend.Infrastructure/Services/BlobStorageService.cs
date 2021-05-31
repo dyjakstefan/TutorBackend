@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Options;
-using TutorBackend.Infrastructure.Options;
+using TutorBackend.Infrastructure.Settings;
 using TutorBackend.Infrastructure.Services.Interfaces;
 
 namespace TutorBackend.Infrastructure.Services

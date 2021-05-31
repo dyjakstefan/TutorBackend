@@ -1,4 +1,4 @@
-﻿namespace TutorBackend.Infrastructure.Options
+﻿namespace TutorBackend.Infrastructure.Settings
 {
     public class JwtSettings
     {

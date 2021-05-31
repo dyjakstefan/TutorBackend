@@ -13,7 +13,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TutorBackend.Core.Entities;
 using TutorBackend.Infrastructure.MappingProfile;
-using TutorBackend.Infrastructure.Options;
+using TutorBackend.Infrastructure.Settings;
 using TutorBackend.Infrastructure.Services;
 using TutorBackend.Infrastructure.Services.Interfaces;
 using TutorBackend.Infrastructure.SqlServerContext;

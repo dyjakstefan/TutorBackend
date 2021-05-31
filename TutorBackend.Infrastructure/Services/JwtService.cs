@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TutorBackend.Core.Responses;
 using TutorBackend.Infrastructure.Extensions;
-using TutorBackend.Infrastructure.Options;
+using TutorBackend.Infrastructure.Settings;
 using TutorBackend.Infrastructure.Services.Interfaces;
 
 namespace TutorBackend.Infrastructure.Services

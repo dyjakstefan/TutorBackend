@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using TutorBackend.Core.Entities;
 using TutorBackend.Core.Requests;
 using TutorBackend.Core.Responses;
+using TutorBackend.Infrastructure.Repositories.Interfaces;
 using TutorBackend.Infrastructure.Services;
 using TutorBackend.Infrastructure.Services.Interfaces;
 using TutorBackend.Infrastructure.SqlServerContext;
@@ -25,6 +26,7 @@ namespace TutorBackend.Infrastructure.Tests
         private readonly Mock<IPasswordHasher<User>> passwordHasher;
         private readonly Mock<IMapper> mapper;
         private readonly Mock<IJwtService> jwtService;
+        private readonly Mock<IUserRepository> userRepository;
 
         public UserServiceTests()
         {
@@ -44,6 +46,8 @@ namespace TutorBackend.Infrastructure.Tests
             passwordHasher = new Mock<IPasswordHasher<User>>();
             mapper = new Mock<IMapper>();
             jwtService = new Mock<IJwtService>();
+
+            userRepository = new Mock<IUserRepository>();
         }
 
 
@@ -51,7 +55,7 @@ namespace TutorBackend.Infrastructure.Tests
         public async Task ShouldReturnNullWhenUserExists()
         {
             //Arrange
-            var userService = new UserService(dbContext, passwordHasher.Object, mapper.Object, jwtService.Object);
+            var userService = new UserService(dbContext, passwordHasher.Object, mapper.Object, jwtService.Object, userRepository.Object);
 
             var request = new CreateUserRequest
             {
@@ -72,7 +76,7 @@ namespace TutorBackend.Infrastructure.Tests
             //Arrange
             mapper.Setup(m => m.Map<CreateUserRequest, User>(It.IsAny<CreateUserRequest>())).Returns(new User { Id = new Guid(), Email = "test" });
             jwtService.Setup(j => j.CreateToken(It.IsAny<Guid>(), It.IsAny<string>())).Returns(new JwtResponse());
-            var userService = new UserService(dbContext, passwordHasher.Object, mapper.Object, jwtService.Object);
+            var userService = new UserService(dbContext, passwordHasher.Object, mapper.Object, jwtService.Object, userRepository.Object);
 
             var request = new CreateUserRequest
             {

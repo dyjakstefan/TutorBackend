@@ -4,7 +4,7 @@ using Xunit;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using TutorBackend.Infrastructure.Options;
+using TutorBackend.Infrastructure.Settings;
 
 namespace TutorBackend.Infrastructure.Tests
 {
