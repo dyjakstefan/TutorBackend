@@ -49,6 +49,11 @@ namespace TutorBackend.Infrastructure.Services
                 return false;
             }
 
+            if (tutor.Topics.All(x => x.Name != request.Topic))
+            {
+                return false;
+            }
+
             var lesson = mapper.Map<Lesson>(request);
             lesson.TutorId = tutor.Id;
 

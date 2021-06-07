@@ -22,6 +22,8 @@ namespace TutorBackend.Core.Entities
 
         public DateTime UpdatedAt { get; set; }
 
+        public string Topic { get; set; }
+
         public Guid ScheduleDayId { get; set; }
 
         public Guid UserId { get; set; }

@@ -25,5 +25,7 @@ namespace TutorBackend.Core.Requests
         public DateTime StartAt { get; set; }
 
         public DateTime EndAt { get; set; }
+
+        public string Topic { get; set; }
     }
 }
