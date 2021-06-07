@@ -37,6 +37,17 @@ namespace TutorBackend.Controllers
         }
 
         [HttpGet("{username}")]
+        public async Task<IActionResult> GetActiveSchedulesForTutor(string username)
+        {
+            var result = await scheduleService.GetActiveSchedulesForTutor(username);
+
+            if (result == null)
+                return BadRequest("Invalid data.");
+
+            return Ok(result);
+        }
+
+        [HttpGet("all/{username}")]
         public async Task<IActionResult> GetAllSchedulesForTutor(string username)
         {
             var result = await scheduleService.GetAllSchedulesForTutor(username);

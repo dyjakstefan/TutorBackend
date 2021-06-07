@@ -41,6 +41,15 @@ namespace TutorBackend.Infrastructure.Repositories
             return tutor?.ScheduleDays;
         }
 
+        public async Task<IList<ScheduleDay>> GetActiveForTutor(string username)
+        {
+            var tutor = await dbContext.Tutors.Include(x => x.ScheduleDays.Where(s => s.StartAt >= DateTime.Now).OrderBy(s => s.StartAt)).FirstOrDefaultAsync(x =>
+                x.Username == username && x.UserType == Constants.Tutor);
+
+            return tutor?.ScheduleDays;
+        }
+
+
         public async Task<ScheduleDay> GetScheduleById(Guid scheduleId)
         {
             var schedule = await dbContext.ScheduleDays.Include(x => x.Lessons).FirstOrDefaultAsync(x => x.Id == scheduleId);

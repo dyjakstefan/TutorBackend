@@ -60,6 +60,15 @@ namespace TutorBackend.Infrastructure.Services
             return schedulesDto;
         }
 
+        public async Task<IList<ScheduleDayDto>> GetActiveSchedulesForTutor(string username)
+        {
+            var schedules = await scheduleRepository.GetActiveForTutor(username);
+
+            var schedulesDto = mapper.Map<IList<ScheduleDayDto>>(schedules);
+
+            return schedulesDto;
+        }
+
         public async Task<bool> UpdateScheduleDay(UpdateScheduleRequest request)
         {
             if (request.StartAt.Date != request.EndAt.Date || !await tutorRepository.AnyExists(request.UserId))
